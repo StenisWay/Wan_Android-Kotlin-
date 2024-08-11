@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/newsFragment">
+
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.stenisway.wan_android.ui.newitem.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.stenisway.wan_android.ui.newitem.NewsDetailFragment"
+        android:label="fragment_news_detail"
+        tools:layout="@layout/fragment_news_detail" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.stenisway.wan_android.ui.setting.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.stenisway.wan_android.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.stenisway.wan_android.ui.favorite.FavoriteAndLaterReadFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite_later_read" />
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.stenisway.wan_android.ui.categories.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_categoriesDetailFragment"
+            app:destination="@id/categoriesDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesDetailFragment"
+        android:name="com.stenisway.wan_android.ui.categories.CategoriesDetailFragment"
+        android:label="fragment_categories_detail"
+        tools:layout="@layout/fragment_categories_detail" />
+</navigation>
