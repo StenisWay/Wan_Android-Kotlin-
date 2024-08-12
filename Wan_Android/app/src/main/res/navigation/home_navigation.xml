@@ -13,6 +13,15 @@
         <action
             android:id="@+id/action_newsFragment_to_newsDetailFragment"
             app:destination="@id/newsDetailFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"
@@ -47,5 +56,9 @@
         android:id="@+id/categoriesDetailFragment"
         android:name="com.stenisway.wan_android.ui.categories.CategoriesDetailFragment"
         android:label="fragment_categories_detail"
-        tools:layout="@layout/fragment_categories_detail" />
+        tools:layout="@layout/fragment_categories_detail" >
+        <action
+            android:id="@+id/action_categoriesDetailFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
 </navigation>

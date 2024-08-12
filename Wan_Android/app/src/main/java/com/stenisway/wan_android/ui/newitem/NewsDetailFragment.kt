@@ -14,6 +14,7 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.just.agentweb.AgentWeb
 import com.stenisway.wan_android.R
 import com.stenisway.wan_android.base.BaseFragment
@@ -168,4 +169,6 @@ class NewsDetailFragment : BaseFragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
+
+
 }

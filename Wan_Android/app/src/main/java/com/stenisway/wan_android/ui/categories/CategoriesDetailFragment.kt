@@ -25,7 +25,7 @@ class CategoriesDetailFragment : BaseFragment() {
     private lateinit var viewModel: CategoriesDetailViewModel
     private lateinit var binding: FragmentCategoriesDetailBinding
     private val TAG = this.javaClass.name
-    private var adapter : NewsAdapter? = null
+    private var adapter: NewsAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,12 +82,12 @@ class CategoriesDetailFragment : BaseFragment() {
                 val manager = (binding.rvCategories.layoutManager as LinearLayoutManager)
                 val position = manager.findLastVisibleItemPosition()
                 super.onScrolled(recyclerView, dx, dy)
-                if (!viewModel.page.needToScrollToTop){
+                if (!viewModel.page.needToScrollToTop) {
                     if (position == adapter!!.itemCount - 1) {
                         viewModel.getCategoriesData()
                         Log.d(TAG + "到底讀取資料", "讀取成功")
                     }
-                    if (viewModel.page.isOverPage()){
+                    if (viewModel.page.isOverPage()) {
                         kotlin.runCatching {
                             val lastItem = manager.findViewByPosition(adapter!!.itemCount - 1)!!
                             lastItem.visibility = View.INVISIBLE
@@ -103,16 +103,13 @@ class CategoriesDetailFragment : BaseFragment() {
 
     }
 
-    private fun setBackPress(){
+    private fun setBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.clearData()
             adapter = null
             findNavController().popBackStack()
         }
     }
-
-
-
 
     override fun onPause() {
         viewModel.page.needToScrollToTop = true
@@ -122,4 +119,5 @@ class CategoriesDetailFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
     }
+
 }

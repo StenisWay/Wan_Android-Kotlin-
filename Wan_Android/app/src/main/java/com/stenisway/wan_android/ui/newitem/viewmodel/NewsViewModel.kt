@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.stenisway.wan_android.component.banner.bannerbean.BannerItem
 import com.stenisway.wan_android.ui.newitem.newsbean.NewItem
 import com.stenisway.wan_android.ui.newitem.repo.NewsRepository
 import com.stenisway.wan_android.util.PageUtil
@@ -22,6 +23,7 @@ class NewsViewModel @Inject constructor(application: Application, val repository
     val page = PageUtil()
 
     private val _newsData = mutableListOf<NewItem>()
+    private val _bannerDdata = mutableListOf<BannerItem>()
 
     fun getBannerData(){
         withIO {
@@ -44,12 +46,18 @@ class NewsViewModel @Inject constructor(application: Application, val repository
             retrofitRequest.getNewsData(page.CURRENT_PAGE)
             Log.d(TAG, "getNewsData: 有執行")
 
-
-
         }
     }
 
-    fun getAllData( datas : List<NewItem> ) : List<NewItem>{
+    fun setBannerItem(bannerItems: List<BannerItem>){
+        _bannerDdata.addAll(bannerItems)
+    }
+
+    fun getBannerItem() : List<BannerItem>{
+        return _bannerDdata
+    }
+
+    fun getAllData( datas : List<NewItem> = emptyList() ) : List<NewItem>{
         _newsData.addAll(datas)
         val newsData = mutableListOf<NewItem>()
         newsData.addAll(_newsData)

@@ -28,12 +28,12 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        舊的方法會閃退，暫時不會更新
 //        binding.custViewSendadvice.setOnClickListener { view1 -> sentEmail(requireContext()) }
-        binding.txtThankTeacherHuang.setOnClickListener { v ->
-            val intent = Intent()
-            intent.action = Intent.ACTION_VIEW
-            intent.data = Uri.parse("https://sites.google.com/site/ronforwork/Home/android-2")
-            startActivity(intent)
-        }
+//        binding.txtThankTeacherHuang.setOnClickListener { v ->
+//            val intent = Intent()
+//            intent.action = Intent.ACTION_VIEW
+//            intent.data = Uri.parse("https://sites.google.com/site/ronforwork/Home/android-2")
+//            startActivity(intent)
+//        }
     }
 
     fun sentEmail(context: Context) {

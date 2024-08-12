@@ -116,41 +116,44 @@ class NewsFragment : BaseFragment() {
         //      以及有時候會沒辦法跳轉到第一個item
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.repository.newData.collectLatest { news ->
-                Log.d(TAG, "收到的NewItems $news")
-                viewModel.page.TOTAL_PAGE = news.pageCount
-                viewModel.page.ISLOADING = false
-                Log.d(TAG, "collectRecycleViewData: ${viewModel.page.ISLOADING}")
-                Log.d(TAG, "TotalPage: ${viewModel.page.TOTAL_PAGE}")
-                Log.d(TAG, "AllData: ${news.datas[0].id}")
-                hideProgress()
-                newsAdapter!!.submitList(viewModel.getAllData(news.datas))
-                    .also {
-                        if (viewModel.page.needToScrollToTop) {
-                            binding.recycleNews.scrollToPosition(0)
-                            viewModel.page.needToScrollToTop = false
+            viewModel.repository.bannerData.collect { banners ->
+                viewModel.repository.newData.collectLatest { news ->
+                    Log.d(TAG, "收到的NewItems $news")
+                    viewModel.page.TOTAL_PAGE = news.pageCount
+                    viewModel.page.ISLOADING = false
+                    Log.d(TAG, "collectRecycleViewData: ${viewModel.page.ISLOADING}")
+                    Log.d(TAG, "TotalPage: ${viewModel.page.TOTAL_PAGE}")
+                    Log.d(TAG, "AllData: ${news.datas[0].id}")
+                    hideProgress()
+                    newsAdapter!!.submitList(viewModel.getAllData(news.datas))
+                        .also {
+                            if (viewModel.page.needToScrollToTop) {
+                                binding.recycleNews.scrollToPosition(0)
+                                viewModel.page.needToScrollToTop = false
+                            }
                         }
-                    }
-                    .also {
-                        if ((newsAdapter!!.getPic_list().isNullOrEmpty())){
-                            viewModel.repository.bannerData.collect { banners ->
+                        .also {
+                            if ((newsAdapter!!.getPic_list().isNullOrEmpty())) {
                                 Log.d(TAG, "收到的banner資料 $banners")
                                 if (banners.isEmpty()) {
                                     withIO {
                                         viewModel.getBannerData()
+
                                     }
+                                }
+                                if (viewModel.getBannerItem().isEmpty()) {
+                                    viewModel.setBannerItem(banners)
                                 }
                                 newsAdapter!!.setPic_list(banners)
                             }
                         }
-                    }
-
+                }
             }
         }
     }
 
-    private fun hideProgress(){
-        with(binding){
+    private fun hideProgress() {
+        with(binding) {
             progressBar2.visibility = View.GONE
             txtNewsNodata.visibility = View.GONE
             recycleNews.visibility = View.VISIBLE
