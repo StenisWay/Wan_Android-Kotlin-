@@ -134,8 +134,8 @@ class NewsDetailFragment : BaseFragment() {
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.detail_menu, menu)
-                val itemSearch = menu.findItem(R.id.app_bar_search)
-                itemSearch.isVisible = false
+//                val itemSearch = menu.findItem(R.id.app_bar_search)
+//                itemSearch.isVisible = false
                 viewModel.newItem.value?.let { setItemViewInitStatus(menu, it) }
             }
 

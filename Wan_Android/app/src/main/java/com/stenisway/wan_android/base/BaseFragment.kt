@@ -10,13 +10,6 @@ import com.stenisway.wan_android.activity.MainActivity
 open class BaseFragment : Fragment() {
 
     private lateinit var activity: MainActivity
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         activity = requireActivity() as MainActivity
