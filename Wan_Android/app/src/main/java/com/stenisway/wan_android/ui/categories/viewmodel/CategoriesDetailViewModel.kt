@@ -47,6 +47,10 @@ class CategoriesDetailViewModel @Inject constructor(val categoriesDetailReposito
         _cgData = mutableListOf()
     }
 
+    fun dataIsEmpty() : Boolean{
+        return _cgData.isEmpty()
+    }
+
 
     fun getAllData( datas : List<NewItem> = emptyList() ) : List<NewItem>{
         _cgData.addAll(datas)

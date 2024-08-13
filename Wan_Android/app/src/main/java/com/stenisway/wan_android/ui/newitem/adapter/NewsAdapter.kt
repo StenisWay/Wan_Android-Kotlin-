@@ -41,6 +41,12 @@ class NewsAdapter : ListAdapter<NewItem, RecyclerView.ViewHolder?> {
         return pic_list
     }
 
+    fun clearData(){
+        val currentList = this.currentList.toMutableList()
+        currentList.clear()
+        notifyDataSetChanged()
+    }
+
     constructor(noBanner: Boolean) : super(ItemCallBack()) {
         if (noBanner) {
             this.noBanner = true

@@ -38,7 +38,6 @@ class CategoriesDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         lifecycleScope.launch {
             val id = async {
                 arguments?.getInt("id")
@@ -48,7 +47,6 @@ class CategoriesDetailFragment : BaseFragment() {
                 viewModel.getCategoriesData(it)
                 viewModel.id = it
             }
-
         }
 
         adapter = NewsAdapter(true)
@@ -60,13 +58,14 @@ class CategoriesDetailFragment : BaseFragment() {
                 newItemBean.data?.let { NewItems ->
                     viewModel.page.ISLOADING = false
                     viewModel.page.TOTAL_PAGE = NewItems.pageCount
-                    adapter?.submitList(viewModel.getAllData(NewItems.datas)).also {
-                        if (viewModel.page.needToScrollToTop) {
-                            binding.rvCategories.scrollToPosition(0)
-                            viewModel.page.needToScrollToTop = false
-                        }
+                    if (viewModel.page.needToScrollToTop){
+                        viewModel.clearData()
                     }
-
+                    adapter?.submitList(viewModel.getAllData(NewItems.datas))
+                    if (viewModel.page.needToScrollToTop) {
+                        binding.rvCategories.scrollToPosition(0)
+                        viewModel.page.needToScrollToTop = false
+                    }
                 }
             }
         }
@@ -94,21 +93,21 @@ class CategoriesDetailFragment : BaseFragment() {
                         }
                     }
                 }
-
             }
-
         })
-
-        setBackPress()
-
     }
 
     private fun setBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.clearData()
-            adapter = null
             findNavController().popBackStack()
         }
+    }
+
+    override fun onResume() {
+        if (viewModel.dataIsEmpty()){
+            viewModel.getCategoriesData()
+        }
+        super.onResume()
     }
 
     override fun onPause() {
