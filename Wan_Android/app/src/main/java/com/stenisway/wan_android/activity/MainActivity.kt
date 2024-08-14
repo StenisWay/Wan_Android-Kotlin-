@@ -9,15 +9,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.stenisway.wan_android.R
+import com.stenisway.wan_android.base.ErrorTypeOnNet
 import com.stenisway.wan_android.databinding.ActivityMainBinding
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgItem
-import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Objects
@@ -75,6 +75,33 @@ class MainActivity : AppCompatActivity() {
                         viewModel.saveCategoriesItems(cgList.await())
                     }
                 }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.repository.errorEvent.collect{
+                Log.d(TAG, it.toString())
+                delay(200)
+                when(it){
+                    is ErrorTypeOnNet.NewItemErrorOnNet ->{
+                        viewModel.retrofitRequest.getNewsData(it.page)
+                    }
+                    is ErrorTypeOnNet.BannerOnNetError -> {
+                        viewModel.retrofitRequest.getBannerDataOnNet()
+                    }
+                    is ErrorTypeOnNet.CategoriesDataErrorOnNet -> {
+                        viewModel.retrofitRequest.getCategoriesData(it.id, it.page)
+                    }
+                    is ErrorTypeOnNet.CategoriesTitleAndItemErrorOnNet -> {
+                        viewModel.retrofitRequest.getCategoriesTitleOnNet()
+                    }
+                    is ErrorTypeOnNet.HotKeyErrorOnNet -> {
+                        viewModel.retrofitRequest.getHkOnNet()
+                    }
+
+
+                }
+
             }
         }
     }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stenisway.wan_android.R
 import com.stenisway.wan_android.base.BaseFragment
+import com.stenisway.wan_android.base.ErrorEventOnLocal
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItem
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItems
 import com.stenisway.wan_android.databinding.FragmentNewsBinding
@@ -24,6 +25,7 @@ import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -147,6 +149,13 @@ class NewsFragment : BaseFragment() {
                                 newsAdapter!!.setPic_list(banners)
                             }
                         }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.repository.errorEvent.collect{
+                if (it is ErrorEventOnLocal.BannerOnLocalError){
+                    viewModel.getBannerData()
                 }
             }
         }

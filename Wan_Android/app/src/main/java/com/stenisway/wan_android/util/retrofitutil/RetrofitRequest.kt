@@ -3,6 +3,7 @@ package com.stenisway.wan_android.util.retrofitutil
 import android.content.Context
 import android.util.Log
 import com.stenisway.wan_android.activity.MainActivityRepository
+import com.stenisway.wan_android.base.ErrorTypeOnNet
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItems
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgBean
 import com.stenisway.wan_android.ui.categories.repo.CategoriesDetailRepository
@@ -15,7 +16,6 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,9 +62,9 @@ class RetrofitRequest (val context: Context) {
 
             override fun onFailure(call: Call<NewItemBean?>, t: Throwable) {
                 Log.e(TAG + "connectFail", "connectFail  $t")
+
                 withIO {
-                    delay(200)
-                    getNewsData(currentPage)
+                    mainRepository.submitErrorEvent(ErrorTypeOnNet.NewItemErrorOnNet(currentPage, t))
                 }
             }
         })

@@ -3,6 +3,7 @@ package com.stenisway.wan_android.util.roomutil
 import android.content.Context
 import android.util.Log
 import com.stenisway.wan_android.activity.MainActivityRepository
+import com.stenisway.wan_android.base.ErrorEventOnLocal
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItems
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgItem
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgTitle
@@ -19,6 +20,7 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class CRUDRepository(context: Context) {
@@ -120,8 +122,13 @@ class CRUDRepository(context: Context) {
 
 
     suspend fun getBannerItemFromLocalToNewsFragment() {
-        crudEnumImpl.useBannerItemMethod(CRUDEnum.SELECT_ALL)
-            ?.let { newsRepository.submitBannerData(it) }
+        val bList = crudEnumImpl.useBannerItemMethod(CRUDEnum.SELECT_ALL)
+        if (bList.isNullOrEmpty()){
+            delay(200)
+            newsRepository.submitErrorEvent(ErrorEventOnLocal.BannerOnLocalError)
+        }else{
+            newsRepository.submitBannerData(bList)
+        }
     }
 
     suspend fun updateNewItem(newItem: NewItem) {
