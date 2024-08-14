@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.stenisway.wan_android.R
 import com.stenisway.wan_android.base.ErrorTypeOnNet
@@ -117,7 +116,20 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener {item ->
-            NavigationUI.onNavDestinationSelected(item, navController)
+            when(item.itemId){
+                R.id.newsFragment -> {
+                    navController.navigate(R.id.newsFragment)
+                }
+                R.id.categoriesFragment -> {
+                    navController.navigate(R.id.categoriesFragment)
+                }
+                R.id.settingFragment -> {
+                    navController.navigate(R.id.settingFragment)
+                }
+                R.id.favoriteFragment -> {
+                    navController.navigate(R.id.favoriteFragment)
+                }
+            }
             return@setOnItemSelectedListener true
         }
 //        setupWithNavController(bottomNavigationView, navController)

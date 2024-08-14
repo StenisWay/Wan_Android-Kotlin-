@@ -1,23 +1,13 @@
 package com.stenisway.wan_android.ui.categories.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.stenisway.wan_android.ui.categories.repo.CategoriesDetailRepository
 import com.stenisway.wan_android.ui.newitem.newsbean.NewItem
-import com.stenisway.wan_android.ui.newitem.newsbean.NewItemBean
 import com.stenisway.wan_android.util.PageUtil
-import com.stenisway.wan_android.util.retrofitutil.MyAPIService
 import com.stenisway.wan_android.util.retrofitutil.RetrofitRequest
-import com.stenisway.wan_android.util.retrofitutil.RetrofitUtil
 import com.stenisway.wan_android.util.roomutil.CRUDRepository
 import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.Collections
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,8 +15,10 @@ class CategoriesDetailViewModel @Inject constructor(val categoriesDetailReposito
 
     val page = PageUtil()
     private val TAG = this.javaClass.name
-    var id = -1
 
+    companion object{
+        var id = -1
+    }
     private var _cgData = mutableListOf<NewItem>()
 
     fun getCategoriesData(_id: Int = id) {

@@ -56,7 +56,6 @@
         android:id="@+id/categoriesDetailFragment"
         android:name="com.stenisway.wan_android.ui.categories.CategoriesDetailFragment"
         android:label="fragment_categories_detail"
-        app:restoreState="false"
         tools:layout="@layout/fragment_categories_detail" >
         <action
             android:id="@+id/action_categoriesDetailFragment_to_newsDetailFragment"

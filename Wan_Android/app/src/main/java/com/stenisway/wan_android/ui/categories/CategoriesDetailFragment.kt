@@ -15,7 +15,10 @@ import com.stenisway.wan_android.base.BaseFragment
 import com.stenisway.wan_android.databinding.FragmentCategoriesDetailBinding
 import com.stenisway.wan_android.ui.categories.viewmodel.CategoriesDetailViewModel
 import com.stenisway.wan_android.ui.newitem.adapter.NewsAdapter
+import com.stenisway.wan_android.ui.newitem.newsbean.NewItemBean
+import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,14 +41,14 @@ class CategoriesDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            val id = async {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val _id = async {
                 arguments?.getInt("id")
             }
-
-            id.await()?.let {
-                viewModel.getCategoriesData(it)
-                viewModel.id = it
+            val id = _id.await()
+            if (id != null) {
+                viewModel.getCategoriesData(id)
+                CategoriesDetailViewModel.id = id
             }
         }
 
@@ -95,20 +98,22 @@ class CategoriesDetailFragment : BaseFragment() {
                 }
             }
         })
+        setBackPress()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun setBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            withIO {
+                viewModel.categoriesDetailRepository.submitCategoriesItemBean(NewItemBean())
+            }
             findNavController().popBackStack()
         }
     }
 
-    override fun onResume() {
-        if (viewModel.dataIsEmpty()){
-            viewModel.getCategoriesData()
-        }
-        super.onResume()
-    }
 
     override fun onPause() {
         viewModel.page.needToScrollToTop = true
