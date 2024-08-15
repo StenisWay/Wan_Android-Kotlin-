@@ -14,7 +14,8 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wan_Android"
-        tools:targetApi="31" >
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="tiramisu" >
         <activity
             android:name=".activity.MainActivity"
             android:exported="true" >

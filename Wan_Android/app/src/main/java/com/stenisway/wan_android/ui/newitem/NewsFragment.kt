@@ -5,29 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stenisway.wan_android.R
 import com.stenisway.wan_android.base.BaseFragment
 import com.stenisway.wan_android.base.ErrorEventOnLocal
-import com.stenisway.wan_android.component.banner.bannerbean.BannerItem
-import com.stenisway.wan_android.component.banner.bannerbean.BannerItems
 import com.stenisway.wan_android.databinding.FragmentNewsBinding
 import com.stenisway.wan_android.ui.newitem.adapter.NewsAdapter
-import com.stenisway.wan_android.ui.newitem.newsbean.NewItemBean
-import com.stenisway.wan_android.ui.newitem.newsbean.NewItems
 import com.stenisway.wan_android.ui.newitem.viewmodel.NewsViewModel
 import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -55,7 +44,7 @@ class NewsFragment : BaseFragment() {
 
     private fun getData() {
         with(viewModel) {
-            if (newsAdapter.currentList.isEmpty() == true){
+            if (newsAdapter.currentList.isEmpty()){
                 getBannerData()
                 getNewsData()
             }
@@ -100,7 +89,7 @@ class NewsFragment : BaseFragment() {
                     val manager = (binding.recycleNews.layoutManager as LinearLayoutManager)
                     val position = manager.findLastVisibleItemPosition()
 //                  判斷是最後的position時，抓取新的data
-                    if (position == newsAdapter!!.itemCount - 1) {
+                    if (position == newsAdapter.itemCount - 1) {
                         viewModel.getNewsData()
                         Log.d(TAG + "NewItem execute loading?", "Yes")
 //                        Log.d(
@@ -132,7 +121,7 @@ class NewsFragment : BaseFragment() {
                     hideProgress()
                     if (news.datas.isNotEmpty()){
                         Log.d(TAG, "FirstNewItemsData: ${news.datas[0].id}")
-                        newsAdapter!!.submitList(viewModel.getAllData(news.datas))
+                        newsAdapter.submitList(viewModel.getAllData(news.datas))
                             .also {
                                 if (viewModel.page.needToScrollToTop) {
                                     binding.recycleNews.scrollToPosition(0)
@@ -140,7 +129,7 @@ class NewsFragment : BaseFragment() {
                                 }
                             }
                             .also {
-                                if ((newsAdapter!!.getPic_list().isNullOrEmpty())) {
+                                if ((newsAdapter.getPic_list().isNullOrEmpty())) {
                                     Log.d(TAG, "bannerData --> $banners")
                                     if (banners.isEmpty()) {
                                         withIO {
@@ -151,7 +140,7 @@ class NewsFragment : BaseFragment() {
                                     if (viewModel.getBannerItem().isEmpty()) {
                                         viewModel.setBannerItem(banners)
                                     }
-                                    newsAdapter!!.setPic_list(banners)
+                                    newsAdapter.setPic_list(banners)
                                 }
                             }
                     }

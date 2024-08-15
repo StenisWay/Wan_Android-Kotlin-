@@ -22,6 +22,7 @@ class CategoriesFragment : BaseFragment() {
     private lateinit var viewModel: CategoriesViewModel
     private lateinit var binding: FragmentCategoriesBinding
     private lateinit var adapter: CategoriesAdapter
+    private val TAG = javaClass.simpleName
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,9 +41,9 @@ class CategoriesFragment : BaseFragment() {
         binding.rvCglist.layoutManager = LinearLayoutManager(requireContext())
         lifecycleScope.launch {
             viewModel.repository.cgItemsFlow.collect{cgItems ->
-                Log.d("cgItemCollect", "onViewCreated: ${cgItems[0].name}")
+                Log.d(TAG, "cgItemCollect: $cgItems")
                 viewModel.repository.cgTitlesFlow.collect{cgTitles ->
-                    Log.d("cgTitleCollect", "onViewCreated: $cgTitles")
+                    Log.d(TAG, "cgTitleCollect: $cgTitles")
                     if (!adapter.getIsHavingData()){
                         adapter.setData(cgTitles, cgItems)
                     }

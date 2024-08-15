@@ -13,7 +13,6 @@ class FavoriteRepository {
     val favoriteItems = _favoriteItems.asSharedFlow()
 
     suspend fun submitFavoriteItems( items : List<NewItem>){
-        Log.d("submitFavor", "submitFavoriteItems: ")
         _favoriteItems.emit(items)
     }
 

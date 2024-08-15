@@ -13,7 +13,6 @@ class CategoriesRepository {
     val cgTitlesFlow = _cgTilesFlow.asSharedFlow()
 
     suspend fun submitCgTitles(cgTitles: List<CgTitle>){
-        Log.d("submitCgTitle", "$cgTitles")
         _cgTilesFlow.emit(cgTitles)
     }
 

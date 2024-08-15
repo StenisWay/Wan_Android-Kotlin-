@@ -81,7 +81,7 @@ class CategoriesAdapter() :
         button.setOnClickListener { view: View ->
             val bundle = Bundle()
             bundle.putInt("id", item.id)
-            Log.d("categories_itemID", item.id.toString() + "")
+            Log.d(TAG, "categories_itemID" + item.id.toString() + "")
             val navController = view.findNavController()
             navController.navigate(R.id.action_categoriesFragment_to_categoriesDetailFragment, bundle)
         }

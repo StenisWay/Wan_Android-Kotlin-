@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 class FavoriteFragment : Fragment() {
     private lateinit var viewModel: FavoriteFragmentViewModel
     private lateinit var binding: FragmentFavoriteBinding
+    private val TAG = javaClass.simpleName
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,7 +37,6 @@ class FavoriteFragment : Fragment() {
         lifecycleScope.launch {
 
             viewModel.repository.favoriteItems.collect{
-                Log.d("favoriteItemCollect", "onViewCreated: ")
                 adapter.submitList(it).also {
                     binding.rvFavorite.scrollToPosition(0)
                 }

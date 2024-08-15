@@ -1,14 +1,19 @@
 package com.stenisway.wan_android.util.roomutil
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItem
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgItem
 import com.stenisway.wan_android.ui.categories.categoriesbean.CgTitle
 import com.stenisway.wan_android.ui.newitem.newsbean.NewItem
 import com.stenisway.wan_android.ui.search.hkbean.HKItem
-import com.stenisway.wan_android.util.roomutil.CRUDEnum.*
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.CLEAR
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.DELETE
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.INSERT
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.SELECT_ALL
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.SELECT_DELETE
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.SELECT_FAVORITE
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.SELECT_LATER_READ
+import com.stenisway.wan_android.util.roomutil.CRUDEnum.UPDATE
 
 /**
  * 不使用flow的原因

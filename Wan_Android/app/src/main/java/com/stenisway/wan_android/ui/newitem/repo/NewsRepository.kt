@@ -26,7 +26,6 @@ class NewsRepository {
     }
 
     suspend fun submitNewData(newItems: NewItems){
-        Log.d("newDataEmit", "submitNewData")
         _newsData.emit(newItems)
     }
 

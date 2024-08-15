@@ -32,6 +32,7 @@ class NewsDetailFragment : BaseFragment() {
     private lateinit var viewModel: NewsDetailViewModel
     private lateinit var binding: FragmentNewsDetailBinding
     private lateinit var mAgentWeb: AgentWeb
+    private val TAG = javaClass.simpleName
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -64,7 +65,7 @@ class NewsDetailFragment : BaseFragment() {
             }
             lifecycleScope.launch {
                 viewModel.repository.localItem.collect {
-                    Log.d("取得Local資料", "onViewCreated: ")
+                    Log.d(TAG, "getNewItems")
                     new.laterRead = it.laterRead
                     new.favorite = it.favorite
                 }

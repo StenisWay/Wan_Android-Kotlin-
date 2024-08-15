@@ -25,6 +25,8 @@ import kotlinx.coroutines.withContext
 
 class CRUDRepository(context: Context) {
 
+    private val TAG = javaClass.simpleName
+
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface RepositoryEntryPoint {
@@ -48,12 +50,11 @@ class CRUDRepository(context: Context) {
     private val laterReadRepository = hiltEntryPoint.laterReadRepository()
 
     suspend fun getFavoriteNewItems(){
-        Log.d("有執行Crud favor", "getFavoriteNewItems: ")
         withContext(Dispatchers.IO){
             val list = async {
                 crudEnumImpl.useNewItemMethod(CRUDEnum.SELECT_FAVORITE)
             }
-            Log.d("getFavoriteItems", "getFavoriteNewItems: ${list.await()}")
+            Log.d(TAG, "getFavoriteNewItems: ${list.await()}")
             list.await()?.let {
                 favoriteRepository.submitFavoriteItems(it)
             }

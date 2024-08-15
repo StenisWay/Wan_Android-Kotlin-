@@ -16,7 +16,7 @@ class BannerAdapter(picList: List<BannerItem>) :
 
     init {
         this.picList = picList
-        Log.d(TAG + "piclist_items", "BannerAdapter: $picList")
+        Log.d(TAG, "piclist_items: $picList")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {

@@ -86,8 +86,9 @@ class CategoriesDetailFragment : BaseFragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!viewModel.page.needToScrollToTop) {
                     if (position == adapter!!.itemCount - 1) {
+                        Log.d(TAG, "onScrolled: scroll : $position and adapter position ${adapter!!.itemCount} ")
                         viewModel.getCategoriesData()
-                        Log.d(TAG + "到底讀取資料", "讀取成功")
+                        Log.d(TAG , "categoriesDetail getNewItems")
                     }
                     if (viewModel.page.isOverPage()) {
                         kotlin.runCatching {
@@ -101,10 +102,6 @@ class CategoriesDetailFragment : BaseFragment() {
         setBackPress()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun setBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             withIO {
@@ -113,13 +110,5 @@ class CategoriesDetailFragment : BaseFragment() {
             findNavController().popBackStack()
         }
     }
-
-
-    override fun onPause() {
-        viewModel.page.needToScrollToTop = true
-        super.onPause()
-    }
-
-
 
 }

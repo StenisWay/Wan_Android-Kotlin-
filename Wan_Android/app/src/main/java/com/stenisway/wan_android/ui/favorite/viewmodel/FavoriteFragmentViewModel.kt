@@ -13,9 +13,9 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteFragmentViewModel @Inject constructor(val repository: FavoriteRepository, val crudRepository: CRUDRepository) : ViewModel() {
 
+    private val TAG = javaClass.simpleName
     fun getFavoriteList(){
         withIO {
-            Log.d("有執行vm get fav", "getFavoriteList: ")
             crudRepository.getFavoriteNewItems()
         }
     }

@@ -139,18 +139,11 @@ class RetrofitRequest (val context: Context) {
     fun getCategoriesData(id: Int, currentPage : Int) {
 
         val call = myAPIService.getCategoriesDetail(currentPage, id)
-        Log.d(TAG + "id", id.toString() + "")
-        Log.d(TAG + "page", currentPage.toString() + "")
         call!!.enqueue(object : Callback<NewItemBean?> {
             override fun onResponse(call: Call<NewItemBean?>, response: Response<NewItemBean?>) {
                 if (response.isSuccessful) {
 
                     val newsData: NewItemBean = response.body()!!
-//                    Log.d(TAG + "cg_connectSuccess", response.body()!!.data!!.datas.toString())
-//                    Log.d(
-//                        TAG + "cg_connectSuccessCurPage",
-//                        "onResponse: " + response.body()!!.data!!.curpage
-//                    )
                     withIO {
                         categoriesDetailRepository.submitCategoriesItemBean(newsData)
                     }
@@ -160,6 +153,9 @@ class RetrofitRequest (val context: Context) {
 
             override fun onFailure(call: Call<NewItemBean?>, t: Throwable) {
                 Log.e(TAG + "connectFail", t.toString())
+                withIO {
+                    mainRepository.submitErrorEvent(ErrorTypeOnNet.CategoriesDataErrorOnNet(currentPage, id, t))
+                }
             }
         })
     }
