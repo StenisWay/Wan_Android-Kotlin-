@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.stenisway.wan_android.R
 import com.stenisway.wan_android.base.ErrorTypeOnNet
@@ -66,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                                 val cgItem = cgtitle.children
                                 cgItem?.forEach {
                                     list.add(it)
-                                    Log.d(TAG, "CgItem $it")
+//                                    Log.d(TAG, "CgItem $it")
                                 }
                             }
                             list
@@ -130,9 +132,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.favoriteFragment)
                 }
             }
+//            setupWithNavController(bottomNavigationView, navController)
             return@setOnItemSelectedListener true
         }
-//        setupWithNavController(bottomNavigationView, navController)
+
     }
 
     private fun getData() {

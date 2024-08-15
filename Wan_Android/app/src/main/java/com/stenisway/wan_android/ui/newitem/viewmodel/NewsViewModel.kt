@@ -39,13 +39,11 @@ class NewsViewModel @Inject constructor(application: Application, val repository
             }
             page.ISLOADING = true
             page.CURRENT_PAGE += 1
-            Log.d(TAG, "getNewsData: ${page.isOverPage()}")
+            Log.d(TAG, "isOverPage: ${page.isOverPage()}")
             if (page.isOverPage()) {
                 return@withIO
             }
             retrofitRequest.getNewsData(page.CURRENT_PAGE)
-            Log.d(TAG, "getNewsData: 有執行")
-
         }
     }
 

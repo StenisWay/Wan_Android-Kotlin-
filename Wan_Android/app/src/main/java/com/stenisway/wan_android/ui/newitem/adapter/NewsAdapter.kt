@@ -41,10 +41,8 @@ class NewsAdapter : ListAdapter<NewItem, RecyclerView.ViewHolder?> {
         return pic_list
     }
 
-    fun clearData(){
-        val currentList = this.currentList.toMutableList()
-        currentList.clear()
-        notifyDataSetChanged()
+    fun getDataIsEmpty() : Boolean{
+        return currentList.isEmpty()
     }
 
     constructor(noBanner: Boolean) : super(ItemCallBack()) {
@@ -85,7 +83,7 @@ class NewsAdapter : ListAdapter<NewItem, RecyclerView.ViewHolder?> {
                     }
                 }
             }
-            timer.scheduleAtFixedRate(timerTask, 5000, 5000)
+            timer.schedule(timerTask, 5000, 5000)
             //           (執行重複的區塊, 執行程式碼時先等候多久在開始, 之後每次執行的間隔時間)
             BannerViewHolder(binding)
         } else {
@@ -128,9 +126,9 @@ class NewsAdapter : ListAdapter<NewItem, RecyclerView.ViewHolder?> {
 //        有Banner會多第一行
         var _position = position
         if (!noBanner) {
-            Log.d(TAG + "position before", _position.toString() + "")
+//            Log.d(TAG + "position before", _position.toString() + "")
             _position -= 1
-            Log.d(TAG + "position after", _position.toString() + "")
+//            Log.d(TAG + "position after", _position.toString() + "")
         }
         if (holder.itemViewType == NEWS_NORMAL_ITEM) {
 //            取出物件，做優化
@@ -141,7 +139,7 @@ class NewsAdapter : ListAdapter<NewItem, RecyclerView.ViewHolder?> {
             myViewHolder.binding.txtTime.text = item?.niceDate
             myViewHolder.binding.txtChapterName.text = item?.chapterName
             myViewHolder.binding.txtAuthor.text = item?.author
-            item?.title?.let { Log.e(TAG, it) }
+            item?.title?.let { Log.d(TAG, it) }
             myViewHolder.itemView.setOnClickListener { view: View ->
                 val bundle = Bundle()
                 bundle.putSerializable("newItemUrl", item)

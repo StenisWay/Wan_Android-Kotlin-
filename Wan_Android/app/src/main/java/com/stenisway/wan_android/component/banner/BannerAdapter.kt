@@ -28,7 +28,7 @@ class BannerAdapter(picList: List<BannerItem>) :
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         if (picList.isNotEmpty()) {
             val i = position % picList.size
-            Log.d(TAG + "picUrl", picList[i].imagePath)
+//            Log.d(TAG + "picUrl", picList[i].imagePath)
             Glide.with(holder.binding.root)
                 .load(Uri.parse(picList[i].imagePath))
                 .into(holder.binding.bannerPicture)

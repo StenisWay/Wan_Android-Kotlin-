@@ -67,10 +67,10 @@ class NewsDetailFragment : BaseFragment() {
                     Log.d("取得Local資料", "onViewCreated: ")
                     new.laterRead = it.laterRead
                     new.favorite = it.favorite
-                    setmenu(requireActivity())
                 }
             }
         }
+        setmenu(requireActivity())
     }
 
     private fun getItemFromArg(){
@@ -167,7 +167,7 @@ class NewsDetailFragment : BaseFragment() {
                 }
                 return false
             }
-        }, viewLifecycleOwner, Lifecycle.State.CREATED)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
 

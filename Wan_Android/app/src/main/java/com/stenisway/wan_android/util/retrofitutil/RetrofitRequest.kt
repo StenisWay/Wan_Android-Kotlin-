@@ -51,7 +51,7 @@ class RetrofitRequest (val context: Context) {
             ) {
                 if (response.isSuccessful) {
                     assert(response.body() != null)
-                    Log.d(TAG, "onResponse: Successful")
+                    Log.d(TAG, "onResponse: getNewItems Successful")
                     val newsData: NewItems = response.body()!!.data!!
                     withIO {
                         newsRepository.submitNewData(newsData)
@@ -82,7 +82,11 @@ class RetrofitRequest (val context: Context) {
                 }
             }
 
-            override fun onFailure(call: Call<HokeyItems?>, t: Throwable) {}
+            override fun onFailure(call: Call<HokeyItems?>, t: Throwable) {
+                withIO {
+                    mainRepository.submitErrorEvent(ErrorTypeOnNet.HotKeyErrorOnNet(t))
+                }
+            }
         })
         return successful
     }
@@ -100,7 +104,11 @@ class RetrofitRequest (val context: Context) {
                     }
                 }
             }
-            override fun onFailure(call: Call<CgBean?>, t: Throwable) {}
+            override fun onFailure(call: Call<CgBean?>, t: Throwable) {
+                withIO {
+                    mainRepository.submitErrorEvent(ErrorTypeOnNet.CategoriesTitleAndItemErrorOnNet(t))
+                }
+            }
         })
     }
 
@@ -108,19 +116,22 @@ class RetrofitRequest (val context: Context) {
         val call: Call<BannerItems>? = myAPIService.bannerUrl
         call!!.enqueue(object : Callback<BannerItems> {
             override fun onResponse(call: Call<BannerItems>, response: Response<BannerItems>) {
-                assert(response.body() != null)
-                val list = response.body()
-                withIO {
-                    if (list != null) {
-                        withIO {
-                            mainRepository.submitBannerItems(list)
+                if (response.isSuccessful){
+                    val list = response.body()
+                    withIO {
+                        if (list != null) {
+                            withIO {
+                                mainRepository.submitBannerItems(list)
+                            }
                         }
                     }
                 }
             }
 
             override fun onFailure(call: Call<BannerItems?>, t: Throwable) {
-
+                withIO {
+                    mainRepository.submitErrorEvent(ErrorTypeOnNet.BannerOnNetError(t))
+                }
             }
         })
     }
@@ -133,16 +144,13 @@ class RetrofitRequest (val context: Context) {
         call!!.enqueue(object : Callback<NewItemBean?> {
             override fun onResponse(call: Call<NewItemBean?>, response: Response<NewItemBean?>) {
                 if (response.isSuccessful) {
-                    assert(response.body() != null)
 
                     val newsData: NewItemBean = response.body()!!
-
-
-                    Log.d(TAG + "cg_connectSuccess", response.body()!!.data!!.datas.toString())
-                    Log.d(
-                        TAG + "cg_connectSuccessCurPage",
-                        "onResponse: " + response.body()!!.data!!.curpage
-                    )
+//                    Log.d(TAG + "cg_connectSuccess", response.body()!!.data!!.datas.toString())
+//                    Log.d(
+//                        TAG + "cg_connectSuccessCurPage",
+//                        "onResponse: " + response.body()!!.data!!.curpage
+//                    )
                     withIO {
                         categoriesDetailRepository.submitCategoriesItemBean(newsData)
                     }

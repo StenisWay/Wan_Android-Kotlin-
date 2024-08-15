@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class NewsRepository {
 
-    private val _newsData = MutableSharedFlow<NewItems>(  replay = 0,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-        extraBufferCapacity = 1)
+    private val _newsData = MutableSharedFlow<NewItems>(  replay = 1)
     val newData
         get() = _newsData.asSharedFlow()
 

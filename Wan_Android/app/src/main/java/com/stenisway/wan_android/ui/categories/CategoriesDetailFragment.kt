@@ -120,8 +120,6 @@ class CategoriesDetailFragment : BaseFragment() {
         super.onPause()
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
+
 
 }

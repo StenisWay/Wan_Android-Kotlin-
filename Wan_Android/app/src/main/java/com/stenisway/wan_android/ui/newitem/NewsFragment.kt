@@ -20,6 +20,8 @@ import com.stenisway.wan_android.component.banner.bannerbean.BannerItem
 import com.stenisway.wan_android.component.banner.bannerbean.BannerItems
 import com.stenisway.wan_android.databinding.FragmentNewsBinding
 import com.stenisway.wan_android.ui.newitem.adapter.NewsAdapter
+import com.stenisway.wan_android.ui.newitem.newsbean.NewItemBean
+import com.stenisway.wan_android.ui.newitem.newsbean.NewItems
 import com.stenisway.wan_android.ui.newitem.viewmodel.NewsViewModel
 import com.stenisway.wan_android.util.roomutil.withIO
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +35,7 @@ import kotlinx.coroutines.launch
 class NewsFragment : BaseFragment() {
     private lateinit var viewModel: NewsViewModel
     private lateinit var binding: FragmentNewsBinding
-    private var newsAdapter: NewsAdapter? = null
+    private lateinit var newsAdapter: NewsAdapter
     private val TAG = this.javaClass.name
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,14 +51,14 @@ class NewsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setRecycleView()
         getData()
-
     }
 
     private fun getData() {
         with(viewModel) {
-            getBannerData()
-            getNewsData()
-
+            if (newsAdapter.currentList.isEmpty() == true){
+                getBannerData()
+                getNewsData()
+            }
         }
     }
 
@@ -64,6 +66,8 @@ class NewsFragment : BaseFragment() {
         super.onViewStateRestored(savedInstanceState)
         changeTitle(R.string.News)
     }
+
+
 
     private fun setRecycleView() {
 
@@ -98,11 +102,11 @@ class NewsFragment : BaseFragment() {
 //                  判斷是最後的position時，抓取新的data
                     if (position == newsAdapter!!.itemCount - 1) {
                         viewModel.getNewsData()
-                        Log.d(TAG + "NewItem有執行讀取嗎?", "有執行")
-                        Log.d(
-                            TAG + "是否可以滑動",
-                            viewModel.page.needToScrollToTop.toString() + ""
-                        )
+                        Log.d(TAG + "NewItem execute loading?", "Yes")
+//                        Log.d(
+//                            TAG + "是否可以滑動",
+//                            viewModel.page.needToScrollToTop.toString() + ""
+//                        )
                     }
                 }
             }
@@ -120,35 +124,37 @@ class NewsFragment : BaseFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.repository.bannerData.collect { banners ->
                 viewModel.repository.newData.collectLatest { news ->
-                    Log.d(TAG, "收到的NewItems $news")
+                    Log.d(TAG, "newItems data --> $news")
                     viewModel.page.TOTAL_PAGE = news.pageCount
                     viewModel.page.ISLOADING = false
-                    Log.d(TAG, "collectRecycleViewData: ${viewModel.page.ISLOADING}")
-                    Log.d(TAG, "TotalPage: ${viewModel.page.TOTAL_PAGE}")
-                    Log.d(TAG, "AllData: ${news.datas[0].id}")
+                    Log.d(TAG, "NewItemsIsLoading: ${viewModel.page.ISLOADING}")
+                    Log.d(TAG, "NewItemsTotalPage: ${viewModel.page.TOTAL_PAGE}")
                     hideProgress()
-                    newsAdapter!!.submitList(viewModel.getAllData(news.datas))
-                        .also {
-                            if (viewModel.page.needToScrollToTop) {
-                                binding.recycleNews.scrollToPosition(0)
-                                viewModel.page.needToScrollToTop = false
+                    if (news.datas.isNotEmpty()){
+                        Log.d(TAG, "FirstNewItemsData: ${news.datas[0].id}")
+                        newsAdapter!!.submitList(viewModel.getAllData(news.datas))
+                            .also {
+                                if (viewModel.page.needToScrollToTop) {
+                                    binding.recycleNews.scrollToPosition(0)
+                                    viewModel.page.needToScrollToTop = false
+                                }
                             }
-                        }
-                        .also {
-                            if ((newsAdapter!!.getPic_list().isNullOrEmpty())) {
-                                Log.d(TAG, "收到的banner資料 $banners")
-                                if (banners.isEmpty()) {
-                                    withIO {
-                                        viewModel.getBannerData()
+                            .also {
+                                if ((newsAdapter!!.getPic_list().isNullOrEmpty())) {
+                                    Log.d(TAG, "bannerData --> $banners")
+                                    if (banners.isEmpty()) {
+                                        withIO {
+                                            viewModel.getBannerData()
 
+                                        }
                                     }
+                                    if (viewModel.getBannerItem().isEmpty()) {
+                                        viewModel.setBannerItem(banners)
+                                    }
+                                    newsAdapter!!.setPic_list(banners)
                                 }
-                                if (viewModel.getBannerItem().isEmpty()) {
-                                    viewModel.setBannerItem(banners)
-                                }
-                                newsAdapter!!.setPic_list(banners)
                             }
-                        }
+                    }
                 }
             }
         }
@@ -169,13 +175,8 @@ class NewsFragment : BaseFragment() {
         }
     }
 
-
-    override fun onPause() {
-        viewModel.page.needToScrollToTop = true
-        super.onPause()
-    }
-
     override fun onDestroyView() {
+        viewModel.page.needToScrollToTop = true
         super.onDestroyView()
     }
 

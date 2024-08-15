@@ -95,15 +95,15 @@ class NewlineLayout : ViewGroup {
                 //如果換行，物件高度要加上之前物件的高度以及margin總量
                 layoutChildViewCurY += height + mglp.topMargin + mglp.bottomMargin
             }
-            Log.d(TAG + "layoutMargin", mglp.leftMargin.toString() + "")
+//            Log.d(TAG + "layoutMargin", mglp.leftMargin.toString() + "")
             childView.layout(
                 layoutChildViewCurX + mglp.leftMargin,
                 layoutChildViewCurY + mglp.topMargin,
                 layoutChildViewCurX + width + mglp.leftMargin + mglp.rightMargin,
                 layoutChildViewCurY + height + mglp.topMargin + mglp.bottomMargin
             )
-            Log.d(TAG + "btMargin", mglp.bottomMargin.toString() + "")
-            Log.d(TAG + "topMargin", mglp.topMargin.toString() + "")
+//            Log.d(TAG + "btMargin", mglp.bottomMargin.toString() + "")
+//            Log.d(TAG + "topMargin", mglp.topMargin.toString() + "")
             //一個子物件繪製完後，下個子物件的位子要把前面物件的寬度加上margin算進去
             layoutChildViewCurX += width + mglp.leftMargin + mglp.rightMargin
         }

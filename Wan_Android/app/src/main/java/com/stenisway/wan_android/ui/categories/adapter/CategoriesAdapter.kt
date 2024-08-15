@@ -75,13 +75,13 @@ class CategoriesAdapter() :
             val marginLayoutParams = MarginLayoutParams(layoutParams)
             marginLayoutParams.setMargins(30, 30, 30, 30)
             layoutParams = marginLayoutParams
-            Log.d(TAG + "buttonMargin", marginLayoutParams.leftMargin.toString() + "")
+//            Log.d(TAG + "buttonMargin", marginLayoutParams.leftMargin.toString() + "")
         }
 
         button.setOnClickListener { view: View ->
             val bundle = Bundle()
             bundle.putInt("id", item.id)
-            Log.d("itemID", item.id.toString() + "")
+            Log.d("categories_itemID", item.id.toString() + "")
             val navController = view.findNavController()
             navController.navigate(R.id.action_categoriesFragment_to_categoriesDetailFragment, bundle)
         }
